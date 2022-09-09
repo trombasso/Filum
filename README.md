@@ -5,4 +5,6 @@ log on, and files are displayed according to user-level and file-settings.
 
 A running example is showcased at http://kiwi.fruktsal.at
 
+This project is written in colaboration with Konrad Simsø. (https://github.com/kio7)
+
 ![Filum](http://kiwi.fruktsal.at/static/images/filum_ex.png)
