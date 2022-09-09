@@ -1,0 +1,20 @@
+{% extends 'layout.html' %} 
+{% block title %}Search Result{% endblock %}
+{% block body %}
+
+{% include 'includes/_search_bar.html' %}
+
+    <div class="file-container">
+        <div class="result">Search Result:
+            <hr>
+        </div>
+        {% include 'includes/_file_preview.html' %}
+    </div>
+
+    <div class="filepath">
+        <span>
+        You are here: <a href="{{ url_for('home') }}">Home </a> &#47
+        </span>
+    </div>
+
+{% endblock %}

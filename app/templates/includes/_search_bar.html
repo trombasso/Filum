@@ -1,0 +1,5 @@
+    <form class="search_bar" method="POST" novalidate>
+        {{ search_form.csrf_token() }}
+        {{ search_form.search(class="search_field") }}
+        {{ search_form.submit_search(class="search_button") }}
+    </form>

@@ -1,0 +1,57 @@
+<div class="commentsection">   
+    <!-- kommentar input -->
+    {% if current_user.is_authenticated and current_user.active_user == 2 %}
+        <div class="comment_form_wrapper">
+            <p>Add comment:</p>
+            <form method="POST" novalidate>
+                {{ comment_form.csrf_token() }}
+                <div class="form">
+                    {{ comment_form.comment(class="comment_form") }}
+                </div>
+                <div class="form floatright">
+                    {{ comment_form.submit_comment(class='form btn') }}
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+    
+
+    <!-- kommentarer -->
+    {% for comment in comments %}
+        {% if comment.active_comment == 1 %}
+
+            <div class="preview_comments">    
+                <div class="comment_text">
+                    {% for para in comment.comment %}
+                        {{ para }}<br>
+                    {% endfor %}
+                
+                </div>
+                {% if current_user.id == comment.user_id or current_user.role_id == 3 %}
+                    <div class="comment_buttons">
+                        <form action="{{ url_for('delete_comment', page='file') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?')">
+                            {{ delete_comment_form.csrf_token() }}
+                            {{ delete_comment_form.id(value=comment.comment_id) }}
+                            {{ delete_comment_form.submit(class="edit_buttons delete") }}
+                        </form>
+                    </div>
+                {% endif %}
+                {% for i in users %}
+                    {% if i.id == comment.user_id %}
+                        <div class="comment_info">Comment by: {{ i.name }} | {{ comment.date }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        {% else %}
+
+            <div class="preview_comments">
+                <div class="comment_text">Deleted comment...</div>
+            </div>
+            
+        {% endif %}
+    {% endfor %}
+
+    
+</div>

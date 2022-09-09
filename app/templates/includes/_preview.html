@@ -1,0 +1,36 @@
+<!-- tilbakeknapp på filvisning  -->
+{% if file_info.folder_id != None %}
+<a href="{{ url_for('file', id=file_info.folder_id) }}" class="back_button">Go back</a>
+{% else %}
+<a href="{{ url_for('home') }}" class="back_button">Go back</a>
+{% endif %}
+
+
+<!-- visningsalternativer for forskjellige filer  -->
+
+<!-- bilder  -->
+{% if file_type.file_type == "PNG" or file_type.file_type == "JPEG" or file_type.file_type == "GIF" %}
+    <div class="preview_element">
+        <img src="{{ url_for('static', filename='uploaded_files/' + file_info.filename ) }}" alt="">
+    </div>
+
+<!-- video  -->
+{% elif file_type.file_type == "MP4" or file_type.file_type == "MOV" %}
+    <div class="preview_element">
+        <video class="video_preview" controls>
+            <source src="{{ url_for('static', filename='uploaded_files/' + file_info.filename ) }}" type="video/mp4">
+        </video>
+    </div>
+
+<!-- tekst -->
+{% elif file_type.file_type == "TXT" %}
+    <div class="preview_element">
+        <iframe src="{{ url_for('static', filename='uploaded_files/' + file_info.filename ) }}" class="txt_preview"></iframe>
+    </div>
+
+<!-- pdf -->
+{% elif file_type.file_type == "PDF" %}
+    <div class="preview_element">
+        <embed src="{{ url_for('static', filename='uploaded_files/' + file_info.filename ) }}" class="pdf_preview">
+    </div>
+{% endif %}

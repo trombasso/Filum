@@ -1,0 +1,11 @@
+<div class="heading"><a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="FILUM logo"></a> </div>
+
+<div class="menu-item">
+    <a href="{{ url_for('home') }}" class="menu btn">HOME</a>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('dashboard') }}" class="menu btn">DASHBOARD</a>
+    <a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to logout?')" class="menu btn">LOGOUT</a>
+    {% else %}
+    <a href="{{ url_for('login') }}" class="menu btn">LOGIN</a>
+    {% endif %}
+</div>

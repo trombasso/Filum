@@ -1,0 +1,38 @@
+{% for elem in files %}
+    {% if elem.file_type == 1 %}
+        <a class="file" href="{{ url_for('file', id=elem.f_id) }}">
+            <img class="ikon" src="{{ url_for('static', filename='images/folder.png') }}" alt="Folder">
+            <div class="name">{{ elem.title }}</div>
+        </a>
+    {% elif elem.file_type == 2 %}
+        <a class="file" href="{{ url_for('file', id=elem.f_id) }}">
+            <img class="ikon" src="{{ url_for('static', filename='images/jpg-file.png') }}" alt="jpeg">
+            <div class="name">{{ elem.title }}</div>
+        </a>
+    {% elif elem.file_type == 3 %}
+        <a class="file" href="{{ url_for('file', id=elem.f_id) }}">
+            <img class="ikon" src="{{ url_for('static', filename='images/png-file.png') }}" alt="png">
+            <div class="name">{{ elem.title }}</div>
+        </a>
+    {% elif elem.file_type == 4 %}
+        <a class="file" href="{{ url_for('file', id=elem.f_id) }}">
+            <img class="ikon" src="{{ url_for('static', filename='images/gif-file.png') }}" alt="gif">
+            <div class="name">{{ elem.title }}</div>
+        </a>
+    {% elif elem.file_type == 5 or elem.file_type == 6 %}
+        <a class="file" href="{{ url_for('file', id=elem.f_id) }}">
+            <img class="ikon" src="{{ url_for('static', filename='images/vid-file.png') }}" alt="mp4 or mov">
+            <div class="name">{{ elem.title }}</div>
+        </a>
+    {% elif elem.file_type == 7 %}
+        <a class="file" href="{{ url_for('file', id=elem.f_id) }}">
+            <img class="ikon" src="{{ url_for('static', filename='images/textfile.png') }}" alt="txt">
+            <div class="name">{{ elem.title }}</div>
+        </a>
+    {% elif elem.file_type == 8 %}
+        <a class="file" href="{{ url_for('file', id=elem.f_id) }}">
+            <img class="ikon" src="{{ url_for('static', filename='images/pdf-file.png') }}" alt="pdf"> 
+            <div class="name">{{ elem.title }}</div>
+        </a>
+    {% endif %}
+{% endfor %}

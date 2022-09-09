@@ -1,0 +1,11 @@
+<div class="floatleft">KIOBASSO © 2022 | </div>
+<div class="floatright">
+    {% if current_user.is_authenticated %}
+        Logged in as: {{ current_user.name }}
+    {% else %}
+        Not logged in
+    {% endif %}
+</div>
+
+
+<!-- <a href="https://www.flaticon.com/free-icons/document" title="document icons">Document icons created by Freepik - Flaticon</a> -->

@@ -1,0 +1,251 @@
+{% extends 'layout.html' %} 
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+
+<div class="content-wrapper">
+
+<!-- Admin dashboard elements -------------------------------------------------- -->
+{% if current_user.role_id == 3 %}
+    <div class="dashboard_element center">
+        <h2>Change name/password:</h2>
+        <form method="POST" novalidate>
+            {{ form.csrf_token() }}
+            <div class="form">
+                {{ form.name(class='form-control') }}
+            </div>
+            <div class="form">
+                {{ form.password(class='form-control') }}
+            </div>
+            <div class="form">
+                {{ form.password_confirm(class='form-control') }}
+            </div>
+            <div class="form">
+                {{ form.submit(class='form btn') }}
+            </div>
+            {% if form.errors %}
+                <ul class="">
+                {% for error in form.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </form>
+    </div>
+    <!-- Users ------------------------------------- -->
+    <div class="dashboard_element">
+        <h2>Users</h2>
+        <table class="dash_table">
+            <tr class="title">
+                <td>Name</td>
+                <td>E-mail</td>
+                <td class="action"></td>
+                <td class="action"></td>
+            </tr>
+            {% for user in users %}
+                <tr class="element">
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td class="center">
+                        {% if user.active_user == 2 %}
+                            <div class="green_orb"> </div>
+                        {% else %}
+                           <div class="red_orb"> </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.role_id != 3 %}
+                            {% if user.active_user == 2 %}
+                            <form action="{{ url_for('active_user', user_id=user.id, active_user_toggle=3) }}"><input class="button" type="submit" value="Deactivate"></form>
+                            {% elif user.active_user == 1 or user.active_user == 3 %}
+                            <form action="{{ url_for('active_user', user_id=user.id, active_user_toggle=2) }}"><input class="button" type="submit" value="Activate"></form>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <!-- Files ------------------------------------- -->
+    <div class="dashboard_element">
+        <h2>My Files</h2>
+        <table class="dash_table">
+            <tr class="title"> 
+                <td>Title</td>
+                <td>Description</td>
+                <td>Date</td>
+                <td>Hits</td>
+                <td>Filname</td>
+                <td>Type</td>
+            </tr>
+            {% for elem in files %}                 
+            <tr class="element">
+                    <td><a href="{{ url_for('file', id=elem.f_id) }}">{{ elem.title }}</a></td>
+                    <td>{{ elem.description }}</td>
+                    <td>{{ elem.date }}</td>
+                    <td>{{ elem.hits }}</td>
+                    {% if elem.filename == None %}
+                    <td>{{ elem.filename }}</td>
+                    {% else %}
+                    <td>{{ elem.filename[37:] }}</td>
+                    {% endif %}
+                    <td>{% for type in file_types %}
+                            {% if type.id == elem.file_type%}
+                                {{ type.file_type}}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            
+            {% endfor %}
+        </table>
+    </div>
+    <!-- Comments ------------------------- -->
+    <div class="dashboard_element">
+        <h2>All Comments</h2>
+            <table class="dash_table">
+                <tr class="title">
+                    <td>Filename</td>
+                    <td>Comment</td>
+                    <td class="action"></td>
+                    <td class="action"></td>
+                </tr>
+                {% for elem in comments %}
+                {% if elem.active_comment == 1 %}
+                    <tr class="element">
+                        <td>
+                            {% for file in all_files %}
+                            {% if file.f_id == elem.f_id %}
+                                {{ file.title }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ elem.comment }}</td>
+                        <td><form action="{{ url_for('file', id=elem.f_id) }}"><input type="submit" value="Go to"></form></td>
+                        <td>
+                            <form action="{{ url_for('delete_comment', page='dashboard') }}" method="POST" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                {{ comment_form.csrf_token() }}
+                                {{ comment_form.id(value=elem.comment_id) }}
+                                {{ comment_form.submit() }}
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+    </div>
+    <!-- Log ------------------------- -->
+    <div class="dashboard_element">
+        <h2>Log</h2>
+            <table class="dash_table">
+                <tr class="title">
+                    <td>Log entry</td>
+                </tr>
+                {% for elem in log %}
+                    <tr class="element">
+                        <td>{{ elem.log_text }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+    </div>
+    <br><br><br>
+
+{% else %}
+
+<!-- User dashboard elements----------------------------------------------------- -->
+
+    <!-- Change password and name ------------------------- -->
+    <div class="dashboard_element center">
+        <h2>Change name/password:</h2>
+        <form method="POST" novalidate>
+            {{ form.csrf_token() }}
+            <div class="form">
+                {{ form.name(class='form-control') }}
+            </div>
+            <div class="form">
+                {{ form.password(class='form-control') }}
+            </div>
+            <div class="form">
+                {{ form.password_confirm(class='form-control') }}
+            </div>
+            <div class="form">
+                {{ form.submit(class='form btn') }}
+            </div>
+            {% if form.errors %}
+                <ul class="">
+                {% for error in form.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Files ------------------------------------- -->
+    <div class="dashboard_element">
+        <h2>My Files</h2>
+        <table class="dash_table">
+            <tr class="title"> 
+                <td class=>Title</td>
+                <td>Description</td>
+                <td>Date</td>
+                <td>Hits</td>
+                <td>Filname</td>
+                <td>Type</td>
+            </tr>
+            {% for elem in files %}                 
+            <tr class="element">
+                    <td><a href="{{ url_for('file', id=elem.f_id) }}">{{ elem.title }}</a></td>
+                    <td>{{ elem.description }}</td>
+                    <td>{{ elem.date }}</td>
+                    <td>{{ elem.hits }}</td>
+                    {% if elem.filename == None %}
+                    <td>{{ elem.filename }}</td>
+                    {% else %}
+                    <td>{{ elem.filename[37:] }}</td>
+                    {% endif %}
+                    <td>{% for type in file_types %}
+                            {% if type.id == elem.file_type%}
+                                {{ type.file_type}}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            
+            {% endfor %}
+        </table>
+    </div>
+    <!-- Comments ------------------------- -->
+    <div class="dashboard_element">
+        <h2>My Comments</h2>
+            <table class="dash_table">
+                <tr class="title">
+                    <td>Filename</td>
+                    <td>Comment</td>
+                    <td class="action"></td>
+                    <td class="action"></td>
+                </tr>
+                {% for elem in comments %}
+                {% if elem.active_comment == 1 %}
+                    <tr class="element">
+                        <td>
+                            {% for file in all_files %}
+                            {% if file.f_id == elem.f_id %}
+                                {{ file.title }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ elem.comment }}</td>
+                        <td><form action="{{ url_for('file', id=elem.f_id) }}"><input type="submit" value="Go to"></form></td>
+                        <td><form action="{{ url_for('delete_comment', comment_id=elem.comment_id, page='dashboard') }}"><input onclick="return confirm('Are you sure you want to delete this comment?')" type="submit" value="Delete"></form></td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+    </div>
+    <br><br><br>
+
+{% endif %}
+
+
+</div>
+{% endblock %}

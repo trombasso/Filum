@@ -1,0 +1,7 @@
+{% if masterpath[-2] == 0 %}
+    <a class="file" href="{{ url_for('home') }}">
+{% else %}
+    <a class="file" href="{{ url_for('file', id=masterpath[-2]) }}">
+{% endif %}
+    <img class="ikon" src="{{ url_for('static', filename='images/go-back-arrow.png') }}" alt="">
+</a>

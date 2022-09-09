@@ -1,0 +1,62 @@
+<!-- Edit/Delete buttons -->
+<p>
+    {% if file_info.file_type != 1 %}
+    <a class="edit_buttons edit" href="{{ url_for('static', filename='uploaded_files/' + file_info.filename) }}" download="{{ file_info.filename[37:] }}">Download</a>
+    {% endif %}
+    {% if current_user.id == file_info.author and current_user.active_user == 2 or current_user.role_id == 3 %}
+    <a onclick="editFile()" class="edit_buttons edit">Edit</a>
+    <form action="{{ url_for('delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?')">
+        {{ delete_file_form.csrf_token() }}
+        {{ delete_file_form.id(value=file_info.f_id) }}
+        {{ delete_file_form.submit(class="edit_buttons delete") }}
+    </form>
+    {% endif %}
+</p>
+
+
+
+{% if current_user.id == file_info.author and current_user.active_user == 2 or current_user.role_id == 3 %}
+<!-- Edit popup section for files/folders -->
+<div class="edit_popup" id="edit_popup">
+
+    <h1 class="form">Edit info</h1>
+        <hr>
+        <button class="close_btn" onclick="close_editFile()">X</button>
+        <form method="POST" novalidate enctype="multipart/form-data">
+            {{ edit_form.csrf_token() }}
+            <div class="form tooltip">
+                {{ edit_form.title(class='form-control') }}
+                <!-- <span class="tooltiptext right">TEXT</span> -->
+            </div>
+            <div class="form tooltip">
+                {{ edit_form.description(class='form-control description') }}
+                <!-- <span class="tooltiptext right">TEXT</span> -->
+            </div>
+            <div class="form tooltip">
+                {{ edit_form.tags(class='form-control') }}
+                <!-- <span class="tooltiptext right">TEXT</span> -->
+            </div>
+            <div class="form tooltip">
+                {% for subfield in edit_form.access %}            
+                    {{ subfield(class='') }}
+                    {{ subfield.label(class='') }}
+                {% endfor %}
+                <!-- <span class="tooltiptext right">Private:<br>Only registered users will see the file. <br><br>Public:<br>File is viewable for everyone with access to this folder.</span> -->
+            </div>
+            <div class="form">
+                {{ edit_form.submit_editfile(class='form btn') }}
+            </div>
+        </form>
+</div>
+
+
+<!-- javascript for pop-up som forandrer på CSS-tags -->
+<script>
+    function editFile() {
+    document.getElementById("edit_popup").style.display = "block";
+    }
+    function close_editFile() {
+    document.getElementById("edit_popup").style.display = "none";
+    }
+</script>
+{% endif %}

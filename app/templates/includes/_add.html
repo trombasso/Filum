@@ -1,0 +1,95 @@
+<!-- add file eller folder, boks i nederste høyre hjørne -->
+<div class="addfilebox">
+    
+    <button onclick="newFolder()"><img src="{{ url_for('static', filename='images/add_folder.png') }}" alt="Add Folder"></button>
+    <button onclick="newFile()"><img src="{{ url_for('static', filename='images/add_file.png') }}" alt="Add File"></button>
+
+</div>
+
+
+<!-- pop-ups til overstående boks -->
+
+    <!-- fil popup her  -->
+<div class="new-popup" id="fil_popup">
+    <h1 class="form">Add new file...</h1>
+    <hr>
+    <button class="close_btn" onclick="close_newFile()">X</button>
+    <form method="POST" novalidate enctype="multipart/form-data">
+        {{ file_form.csrf_token() }}
+        <div class="form tooltip">
+            {{ file_form.title(class='form-control') }}
+            <span class="tooltiptext">Give your file a name.<br><br> This is not a filename, only a nickname if you will.</span>
+        </div>
+        <div class="form tooltip">
+            {{ file_form.description(class='form-control description') }}
+            <span class="tooltiptext">Description of your file. <br><br> Please be specific and provide an acurate description!</span>
+        </div>
+        <div class="form">
+            {{ file_form.file_url(class='form-control') }}
+        </div>
+        <div class="form tooltip">
+            {{ file_form.tags(class='form-control') }}
+            <span class="tooltiptext">Enter search tags for your file.<br><br>Each tag should be separated by a comma. <br><br>I.e.<br>: birds, nature, trips</span>
+        </div>
+        <div class="form tooltip">
+            {% for subfield in file_form.access %}
+                {{ subfield(class='') }}
+                {{ subfield.label(class='') }}
+            {% endfor %}
+            <span class="tooltiptext">Private:<br>Only registered users will see the file. <br><br>Public:<br>File is viewable for everyone with access to this folder.</span>
+        </div>
+        <div class="form">
+            {{ file_form.submit_file(class='form btn') }}
+        </div>
+    </form>
+</div>
+
+
+    <!-- folder pop-up her -->
+<div class="new-popup" id="folder_popup">
+    <h1 class="form">Add new folder...</h1>
+    <hr>
+    <button class="close_btn" onclick="close_newFolder()">X</button>
+    <form method="POST" novalidate>
+        {{ folder_form.csrf_token() }}
+        <div class="form tooltip">
+            {{ folder_form.title(class='form-control') }}
+            <span class="tooltiptext">Specify a name for you folder. <br><br>No funny characters please!</span>
+        </div>
+        <div class="form tooltip">
+            {{ folder_form.description(class='form-control description') }}
+            <span class="tooltiptext">Describe the contents of your folder.<br><br>Please be as specific as possible!</span>
+        </div>
+        <div class="form tooltip">
+            {{ folder_form.tags(class='form-control') }}
+            <span class="tooltiptext">Enter search tags for your folder.<br><br>Each tag should be separated by a comma. <br><br>I.e.<br>: birds, nature, trips</span>
+        </div>
+        <div class="form tooltip">
+            {% for subfield in file_form.access %}
+                {{ subfield(class='') }}
+                {{ subfield.label(class='') }}
+            {% endfor %}
+            <span class="tooltiptext">Private:<br>Only registered users will see the folder. <br><br>Public:<br>Folder is viewable for everyone.</span>
+        </div>
+        <div class="form">
+            {{ folder_form.submit_folder(class='form btn') }}
+        </div>
+    </form>
+</div>
+
+
+<!-- javascript for pop-up som forandrer på CSS-tags -->
+<script>
+    function newFile() {
+      document.getElementById("fil_popup").style.display = "block";
+    }
+    function close_newFile() {
+      document.getElementById("fil_popup").style.display = "none";
+    }
+    function newFolder() {
+      document.getElementById("folder_popup").style.display = "block";
+    }
+    function close_newFolder() {
+      document.getElementById("folder_popup").style.display = "none";
+    }
+</script>

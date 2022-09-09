@@ -1,0 +1,25 @@
+{% extends 'layout.html' %} 
+{% block title %}Home{% endblock %}
+{% block body %}
+
+{% include 'includes/_search_bar.html' %}
+
+    <div class="file-container">
+        
+        {% include 'includes/_file_preview.html' %}
+
+    </div>
+
+    <!-- add fil eller folder boks -->
+    {% if current_user.is_authenticated and current_user.active_user == 2  %}
+        {% include 'includes/_add.html'%}
+    {% endif %}
+
+    <div class="filepath">
+        <span>
+        You are here: <a href="{{ url_for('home') }}">Home</a> /
+        </span>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'layout.html' %} 
+{% block title %}{{ file_info.title }}{% endblock %}
+{% block body %}
+
+{% include 'includes/_search_bar.html' %}
+    <!-- Info-felt  -->
+    <div class="info-column">
+
+        <table class="info-table">
+            <tr><td class="info-title">{{ file_info.title }}</td></tr>
+            <tr><td class="info-heading">info:</td></tr>
+            <tr><td class="info-text">
+
+                {% for para in file_info_description %}
+                {{ para }}<br>
+                {% endfor %}
+
+            </td></tr>
+            <tr><td class="info-heading">Owner:</td></tr>
+            <tr><td class="info-text">{{ file_userinfo.name }}</td></tr>
+            <tr><td class="info-heading">Created:</td></tr>
+            <tr><td class="info-text">{{ file_info.date }}</td></tr>
+            <tr><td class="info-heading">Permissions:</td></tr>
+            <tr><td class="info-text">{{ user_level.role_name }}</td></tr>
+            <tr><td class="info-heading">Hits:</td></tr>
+            <tr><td class="info-text">{{ file_info.hits }}</td></tr>
+            <tr><td class="info-heading">Tags:</td></tr>
+            <tr><td class="info-text">{{ tag }}</td></tr>
+        </table>
+        
+            {% include 'includes/_edit.html' %}
+
+    </div>
+    
+    <div class="file-container view-file">
+    <!-- Hvis katalog -> Vis alle filer og kataloger -->
+    {% if file_info.file_type == 1 %}
+
+        {% include 'includes/_go_back.html'%}
+        
+        <!-- Iterer gjennom for å displaye forskjellige filer og/eller kataloger -->
+        {% include 'includes/_file_preview.html' %}
+        
+        <!-- Add-boks for Folder eller Fil -->
+        {% if current_user.id == file_info.author and current_user.active_user == 2 %}
+            {% include 'includes/_add.html'%}
+        {% endif %}
+    
+    {% else %}
+        <!-- Vis preview basert på filtype (_preview.html) -->
+        {% include 'includes/_preview.html'%}
+        {% include 'includes/_comments.html'%}
+
+    {% endif %}
+    </div>
+
+
+    <!-- Path visning på bunnen av skjermen -->
+    <div class="filepath">
+        <span>
+        You are here:
+        {% for x in masterpath %}
+            {% if x == 0 %}
+                <a href="{{ url_for('home') }}">Home</a> / 
+            {% else %}
+                <a href="{{ url_for('file', id=x) }}">
+                    {{ path_names.get(x) }}
+                </a> / 
+            {% endif %}
+        {% endfor %}
+        </span>
+    </div>
+    
+    
+{% endblock %}
